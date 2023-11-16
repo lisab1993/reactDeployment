@@ -1,8 +1,15 @@
 import React from 'react'
 
-const AllTodos = () => {
+const AllTodos = (props) => {
+    const { allTodos } = props;
+
+
   return (
-    <div>AllTodos</div>
+    <div>
+        {allTodos.map((todoObj) => (
+            <span key={todoObj.id} >{todoObj.task}</span>
+        ))}
+    </div>
   )
 }
 
