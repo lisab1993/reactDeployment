@@ -2,41 +2,65 @@ import "./App.css";
 import { useEffect, useState } from "react";
 import AddTodo from "./Components/AddTodo";
 import AllTodos from "./Components/AllTodos";
-import { ClearAllTodos } from "./Components/ClearAllTodos";
+import ClearAllTodos from "./Components/ClearAllTodos";
+import AddGrocery from "./Components/AddGrocery";
+import AllGroceries from "./Components/AllGroceries";
+import ClearAllGroceries from "./Components/ClearAllGroceries";
 
 function App() {
+  //text input for a new todo
   const [todoText, setTodoText] = useState("do the dishes");
-  const [counter, setCounter] = useState(() => {
+  //text input for a new grocery item
+  const [groceryText, setGroceryText] = useState("cherries")
+  //counter for todo item ids
+  const [todoCounter, setTodoCounter] = useState(() => {
     const localStoredCounter = localStorage.getItem("counterState")
     return localStoredCounter ? JSON.parse(localStoredCounter) : 0;
   })
+  //counter for grocery item ids
+  const [groceryCounter, setGroceryCounter] = useState(0)
+  //list of all todos
   const [allTodos, setAllTodos] = useState(() => {
-    const localStoredTodos = localStorage.getItem("toTimsState");
-    return localStoredTodos ? JSON.parse(localStoredTodos) : [];
+    const locallyStored = JSON.parse(localStorage.getItem("toTimsState"));
+    return locallyStored ? locallyStored.allTodos : [];
+  });
+  //list of all grocery items
+  const [allGroceries, setAllGroceries] = useState(() => {
+    const locallyStored = JSON.parse(localStorage.getItem("toTimsState"));
+    return locallyStored ? locallyStored.allGroceries : [];
   });
 
+
   useEffect(() => {
-    const stateString = JSON.stringify(allTodos);
+    const allStates = {allTodos, allGroceries, todoCounter, groceryCounter}
+    const stateString = JSON.stringify(allStates);
     localStorage.setItem("toTimsState", stateString);
-    const countString = JSON.stringify(counter);
-    localStorage.setItem("counterState",countString)
-  }, [allTodos]);
+  }, [allTodos, allGroceries]);
 
   const handleTodoTextChange = (event) => {
-    // console.log(event.target.value, 'handle change e.target.value')
     setTodoText(event.target.value);
+  };
+
+  const handleGroceryTextChange = (event) => {
+    setGroceryText(event.target.value);
   };
 
   const clearAllTodos = (event) => {
     localStorage.clear();
     setAllTodos([])
-    setCounter(0)
+    setTodoCounter(0)
   }
 
-  const submitTodo = async (event) => {
+  const ClearAllGroceries = (event) => {
+    localStorage.clear();
+    setAllGroceries([])
+    setGroceryCounter(0)
+  }
+
+  const submitTodo = (event) => {
     event.preventDefault();
     const newTodoObj = {
-      id: counter,
+      id: todoCounter,
       task: todoText,
       completed: false,
       dateAdded: new Date().toString(),
@@ -44,13 +68,27 @@ function App() {
 
     setAllTodos((existingTodos) => [...existingTodos, newTodoObj]);
     setTodoText("");
-    setCounter(counter + 1)
+    setTodoCounter(todoCounter + 1)
   };
+
+  const submitGrocery =(event) => {
+    event.preventDefault()
+    const newGroceryObj = {
+      id: groceryCounter,
+      item: groceryText,
+      completed: false,
+      dateAdded: new Date().toString()
+    };
+
+    setAllGroceries((existingGroceries) => [... existingGroceries, newGroceryObj])
+    setGroceryText("")
+    setGroceryCounter(groceryCounter + 1)
+  } 
 
   return (
     <>
       <div>
-        <h1>Main Page</h1>
+        <h1>Shopping and Todos</h1>
         <span>
           <AddTodo
             todoText={todoText}

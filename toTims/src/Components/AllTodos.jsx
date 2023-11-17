@@ -7,7 +7,7 @@ const AllTodos = (props) => {
   return (
     <div>
         {allTodos.map((todoObj) => (
-            <span key={todoObj.id} >{todoObj.task}</span>
+            <div key={todoObj.id} >{todoObj.task}</div>
         ))}
     </div>
   )

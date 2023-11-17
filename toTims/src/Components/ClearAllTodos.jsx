@@ -7,3 +7,5 @@ export const ClearAllTodos = (props) => {
     <button onClick={clearAllTodos} >Clear All Todos</button>
   )
 }
+
+export default ClearAllTodos
