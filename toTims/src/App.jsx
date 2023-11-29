@@ -88,7 +88,7 @@ function App() {
   return (
     <>
       <div>
-        <h1>Shopping and Todos</h1>
+        <h1 className="font-bold">Shopping and Todos</h1>
         <span>
           <AddTodo
             todoText={todoText}
